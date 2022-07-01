@@ -19,6 +19,8 @@ curl -XGET "$serverHostname/$source_index/_mapping" 2> /dev/null \
     | awk 'NR > 2 { print }' \
     | sed -e '1s/^/{/' \
     | sed -e '$ d' > /tmp/es_$dest_index.tmp
+    
+### TODO: Instead of writing mapping to tmp file write it to variable
 
 echo "ES Reindex : Create destination index with new mapping"
 curl -X PUT "$serverHostname/$dest_index" -H 'Content-Type: application/json' -d @/tmp/es_$dest_index.tmp 2> /dev/null | jq -r .
